@@ -19,6 +19,15 @@
             <p class="text-slate-600 mt-3 text-base sm:text-lg">Enter ECEF coordinates and signal travel times for 4 satellites to calculate receiver position.</p>
         </header>
 
+        <!-- Sample Data Button -->
+        <div class="mb-6 flex justify-end">
+            <button type="button"
+                    onclick="loadDhakaSample()"
+                    class="bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 font-medium px-4 py-2 rounded-xl shadow-sm transition duration-200 text-sm flex items-center gap-2">
+                📍 Load Dhaka Sample Data
+            </button>
+        </div>
+
         <form method="POST" class="space-y-6">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <!-- Satellite 1 to 4 Input Cards -->
@@ -85,5 +94,34 @@
         </div>
         {% endif %}
     </div>
+
+    <!-- Script to populate Dhaka Sample Data matching your input names -->
+    <script>
+        function loadDhakaSample() {
+            // Satellite 1
+            document.querySelector('input[name="sat1_x"]').value = '15600000';
+            document.querySelector('input[name="sat1_y"]').value = '20100000';
+            document.querySelector('input[name="sat1_z"]').value = '10500000';
+            document.querySelector('input[name="sat1_time"]').value = '0.0703153';
+
+            // Satellite 2
+            document.querySelector('input[name="sat2_x"]').value = '-12400000';
+            document.querySelector('input[name="sat2_y"]').value = '22500000';
+            document.querySelector('input[name="sat2_z"]').value = '11800000';
+            document.querySelector('input[name="sat2_time"]').value = '0.0708489';
+
+            // Satellite 3
+            document.querySelector('input[name="sat3_x"]').value = '4200000';
+            document.querySelector('input[name="sat3_y"]').value = '18800000';
+            document.querySelector('input[name="sat3_z"]').value = '24100000';
+            document.querySelector('input[name="sat3_time"]').value = '0.0837579';
+
+            // Satellite 4
+            document.querySelector('input[name="sat4_x"]').value = '-8100000';
+            document.querySelector('input[name="sat4_y"]').value = '15200000';
+            document.querySelector('input[name="sat4_z"]').value = '18900000';
+            document.querySelector('input[name="sat4_time"]').value = '0.0732174';
+        }
+    </script>
 </body>
 </html>
