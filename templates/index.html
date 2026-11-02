@@ -106,6 +106,7 @@
                      View Latitude, Longitude & Altitude (WGS-84)
                 </button>
             </div>
+
             <!-- "How does this work?" Trilateration 3D Toggle Button -->
             <div class="text-center pt-4 border-t border-slate-200">
                 <button type="button"
@@ -118,12 +119,37 @@
 
             <!-- Hidden 3D Model Section -->
             <div id="modelSection" class="hidden space-y-4 pt-2">
-                <div class="flex justify-between items-center bg-slate-900 px-4 py-2 rounded-lg text-xs text-slate-400">
-                    <span>🛰️ Interactive 3D Sphere Intersection Model</span>
+                <div class="flex justify-between items-center bg-slate-100 border border-slate-300 px-4 py-2 rounded-lg text-xs text-slate-700 font-medium">
+                    <span>🛰️ 3D Trilateration Wireframe Model (Clean View)</span>
                     <span>💡 Click & drag to rotate | Scroll to zoom</span>
                 </div>
-                <!-- 3D Viewport Canvas Container -->
-                <div id="canvas-container" class="w-full h-[400px] rounded-lg overflow-hidden relative bg-slate-950 border border-slate-800"></div>
+
+                <!-- 3D Viewport Canvas Container with White Background -->
+                <div id="canvas-container" class="w-full h-[450px] rounded-lg overflow-hidden relative bg-white border border-slate-300 shadow-inner"></div>
+
+                <!-- Labeled Satellites & Receiver Cards -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 text-xs">
+                    <div class="bg-blue-50 border border-blue-200 p-3 rounded-lg">
+                        <span class="font-bold text-blue-700 block mb-1">● Satellite S₁</span>
+                        <p id="label-s1" class="font-mono text-slate-600">Loading...</p>
+                    </div>
+                    <div class="bg-green-50 border border-green-200 p-3 rounded-lg">
+                        <span class="font-bold text-green-700 block mb-1">● Satellite S₂</span>
+                        <p id="label-s2" class="font-mono text-slate-600">Loading...</p>
+                    </div>
+                    <div class="bg-amber-50 border border-amber-200 p-3 rounded-lg">
+                        <span class="font-bold text-amber-700 block mb-1">● Satellite S₃</span>
+                        <p id="label-s3" class="font-mono text-slate-600">Loading...</p>
+                    </div>
+                    <div class="bg-purple-50 border border-purple-200 p-3 rounded-lg">
+                        <span class="font-bold text-purple-700 block mb-1">● Satellite S₄</span>
+                        <p id="label-s4" class="font-mono text-slate-600">Loading...</p>
+                    </div>
+                    <div class="bg-emerald-50 border border-emerald-300 p-3 rounded-lg sm:col-span-2 lg:col-span-1">
+                        <span class="font-bold text-emerald-700 block mb-1">📍 Receiver Position</span>
+                        <p class="font-mono text-slate-800 font-semibold">X: {{ result.x }}m<br>Y: {{ result.y }}m<br>Z: {{ result.z }}m</p>
+                    </div>
+                </div>
             </div>
 
             <!-- Hidden WGS-84 Card (Toggled via JS) -->
@@ -148,35 +174,32 @@
         {% endif %}
     </div>
 
-    <!-- Script to populate Dhaka Sample Data matching your input names -->
+    <!-- Script to populate Dhaka Sample Data -->
     <script>
         function loadDhakaSample() {
-            // Satellite 1
             document.querySelector('input[name="sat1_x"]').value = '15600000';
             document.querySelector('input[name="sat1_y"]').value = '20100000';
             document.querySelector('input[name="sat1_z"]').value = '10500000';
             document.querySelector('input[name="sat1_time"]').value = '0.0703153';
 
-            // Satellite 2
             document.querySelector('input[name="sat2_x"]').value = '-12400000';
             document.querySelector('input[name="sat2_y"]').value = '22500000';
             document.querySelector('input[name="sat2_z"]').value = '11800000';
             document.querySelector('input[name="sat2_time"]').value = '0.0708489';
 
-            // Satellite 3
             document.querySelector('input[name="sat3_x"]').value = '4200000';
             document.querySelector('input[name="sat3_y"]').value = '18800000';
             document.querySelector('input[name="sat3_z"]').value = '24100000';
             document.querySelector('input[name="sat3_time"]').value = '0.0837579';
 
-            // Satellite 4
             document.querySelector('input[name="sat4_x"]').value = '-8100000';
             document.querySelector('input[name="sat4_y"]').value = '15200000';
             document.querySelector('input[name="sat4_z"]').value = '18900000';
             document.querySelector('input[name="sat4_time"]').value = '0.0732174';
         }
     </script>
-<script>
+
+    <script>
         function toggleLLA() {
             const llaSection = document.getElementById('llaSection');
             const btn = document.getElementById('toggleLlaBtn');
@@ -186,11 +209,12 @@
                 btn.textContent = 'Hide Latitude, Longitude & Altitude';
             } else {
                 llaSection.classList.add('hidden');
-                btn.textContent = ' View Latitude, Longitude & Altitude (WGS-84)';
+                btn.textContent = '🌍 View Latitude, Longitude & Altitude (WGS-84)';
             }
         }
     </script>
-<script>
+
+    <script>
         let threeInitialized = false;
 
         function toggle3DModel() {
@@ -201,7 +225,6 @@
                 modelSection.classList.remove('hidden');
                 btn.textContent = 'Hide 3D Trilateration Model';
 
-                // Initialize Three.js on first open so the container has valid dimensions
                 if (!threeInitialized) {
                     initThreeJS();
                     threeInitialized = true;
@@ -216,60 +239,72 @@
             const container = document.getElementById('canvas-container');
             if (!container) return;
 
-            // 1. Scene, Camera, Renderer Setup
+            // Extract input values for labels and distances
+            for (let i = 1; i <= 4; i++) {
+                const x = parseFloat(document.querySelector(`input[name="sat${i}_x"]`)?.value) || 0;
+                const y = parseFloat(document.querySelector(`input[name="sat${i}_y"]`)?.value) || 0;
+                const z = parseFloat(document.querySelector(`input[name="sat${i}_z"]`)?.value) || 0;
+                const time = parseFloat(document.querySelector(`input[name="sat${i}_time"]`)?.value) || 0.07;
+                const distKm = (time * 299792458.0 / 1000).toFixed(0);
+
+                const labelEl = document.getElementById(`label-s${i}`);
+                if (labelEl) {
+                    labelEl.innerHTML = `X: ${(x/1000000).toFixed(2)}M<br>Y: ${(y/1000000).toFixed(2)}M<br>Z: ${(z/1000000).toFixed(2)}M<br>R${i}: ${distKm} km`;
+                }
+            }
+
+            // 1. Scene, Camera, Renderer Setup with White Background
             const scene = new THREE.Scene();
             const camera = new THREE.PerspectiveCamera(60, container.clientWidth / container.clientHeight, 0.1, 1000);
-            camera.position.set(12, 12, 12);
+            camera.position.set(10, 8, 10);
 
             const renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setClearColor(0xffffff, 1); // Pure white background
             renderer.setSize(container.clientWidth, container.clientHeight);
             container.appendChild(renderer.domElement);
 
-            // 2. Enable Click & Drag Rotation (OrbitControls)
+            // 2. OrbitControls
             const controls = new THREE.OrbitControls(camera, renderer.domElement);
             controls.enableDamping = true;
 
             // 3. Lighting
-            const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.9);
             scene.add(ambientLight);
-            const pointLight = new THREE.PointLight(0xffffff, 1);
-            pointLight.position.set(20, 20, 20);
-            scene.add(pointLight);
 
-            // 4. Earth Core (Center representation)
-            const earthGeo = new THREE.SphereGeometry(2.5, 32, 32);
-            const earthMat = new THREE.MeshStandardMaterial({ color: 0x1e3a8a, roughness: 0.8 });
-            const earth = new THREE.Mesh(earthGeo, earthMat);
-            scene.add(earth);
-
-            // 5. Computed Intersection Point Marker (Receiver Position)
-            const markerGeo = new THREE.SphereGeometry(0.35, 16, 16);
-            const markerMat = new THREE.MeshBasicMaterial({ color: 0x10b981 }); // Emerald green
-            const receiverMarker = new THREE.Mesh(markerGeo, markerMat);
-            receiverMarker.position.set(0.5, 3.5, 0.5);
+            // 4. Receiver Marker at Intersection Point (Origin)
+            const recGeo = new THREE.SphereGeometry(0.35, 32, 32);
+            const recMat = new THREE.MeshBasicMaterial({ color: 0x10b981 }); // Emerald Green
+            const receiverMarker = new THREE.Mesh(recGeo, recMat);
+            receiverMarker.position.set(0, 0, 0);
             scene.add(receiverMarker);
 
-            // 6. 4 Intersecting Semi-Transparent Spheres (Trilateration concept)
-            const sphereColors = [0x3b82f6, 0x10b981, 0xf59e0b, 0x8b5cf6]; // Blue, Green, Yellow, Purple
+            // 5. Wireframe Spheres & Satellite Dots (S1, S2, S3, S4)
+            const colors = [0x2563eb, 0x16a34a, 0xd97706, 0x4b5563]; // Blue, Green, Orange, Grey
             for (let i = 0; i < 4; i++) {
-                const sGeo = new THREE.SphereGeometry(4.5 + i * 0.4, 32, 32);
-                const sMat = new THREE.MeshStandardMaterial({
-                    color: sphereColors[i],
-                    transparent: true,
-                    opacity: 0.22,
-                    side: THREE.DoubleSide
-                });
-                const sphereMesh = new THREE.Mesh(sGeo, sMat);
-                // Slight offsets for visual separation of intersecting shells
-                sphereMesh.position.set(
-                    (i === 0 ? 1.5 : i === 1 ? -1.5 : 0),
-                    (i === 2 ? 1.5 : 0),
-                    (i === 3 ? 1.5 : 0)
+                const angle = (i * Math.PI / 2);
+                const pos = new THREE.Vector3(
+                    Math.cos(angle) * 3.8,
+                    Math.sin(angle) * 2.8 + (i % 2 === 0 ? 0.8 : -0.8),
+                    (i - 1.5) * 1.8
                 );
-                scene.add(sphereMesh);
+
+                // Satellite Dot (Si)
+                const satGeo = new THREE.SphereGeometry(0.25, 16, 16);
+                const satMat = new THREE.MeshBasicMaterial({ color: colors[i] });
+                const satMesh = new THREE.Mesh(satGeo, satMat);
+                satMesh.position.copy(pos);
+                scene.add(satMesh);
+
+                // Wireframe Sphere (No transparency)
+                const sphereGeo = new THREE.SphereGeometry(4.2, 16, 16);
+                const wireframeGeo = new THREE.WireframeGeometry(sphereGeo);
+                const wireframeMat = new THREE.LineBasicMaterial({ color: colors[i] });
+                const wireframeMesh = new THREE.LineSegments(wireframeGeo, wireframeMat);
+                wireframeMesh.position.copy(pos);
+                scene.add(wireframeMesh);
             }
 
-            // 7. Animation Loop
+            // 6. Animation Loop
             function animate() {
                 requestAnimationFrame(animate);
                 controls.update();
