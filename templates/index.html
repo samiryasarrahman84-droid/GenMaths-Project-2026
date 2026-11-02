@@ -33,25 +33,25 @@
 
         <form method="POST" class="space-y-6">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Satellite 1 to 4 Input Cards (With value persistence) -->
+                <!-- Satellite 1 to 4 Input Cards (With explicit units and value persistence) -->
                 {% for i in range(1, 5) %}
                 <div class="bg-slate-50 p-5 rounded-xl border border-slate-200 shadow-sm">
                     <h2 class="text-lg font-semibold text-indigo-700 mb-3">Satellite {{ i }}</h2>
                     <div class="space-y-3">
                         <div>
-                            <label class="block text-xs uppercase tracking-wider text-slate-600 mb-1 font-medium">X Coordinate (m)</label>
+                            <label class="block text-xs tracking-wider text-slate-600 mb-1 font-semibold">X Coordinate (meters)</label>
                             <input type="number" step="any" name="sat{{ i }}_x" value="{{ request.form.get('sat' ~ i ~ '_x', '') }}" required placeholder="e.g. 15600000" class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-slate-900 focus:outline-none focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600">
                         </div>
                         <div>
-                            <label class="block text-xs uppercase tracking-wider text-slate-600 mb-1 font-medium">Y Coordinate (m)</label>
+                            <label class="block text-xs tracking-wider text-slate-600 mb-1 font-semibold">Y Coordinate (meters)</label>
                             <input type="number" step="any" name="sat{{ i }}_y" value="{{ request.form.get('sat' ~ i ~ '_y', '') }}" required placeholder="e.g. 21000000" class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-slate-900 focus:outline-none focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600">
                         </div>
                         <div>
-                            <label class="block text-xs uppercase tracking-wider text-slate-600 mb-1 font-medium">Z Coordinate (m)</label>
+                            <label class="block text-xs tracking-wider text-slate-600 mb-1 font-semibold">Z Coordinate (meters)</label>
                             <input type="number" step="any" name="sat{{ i }}_z" value="{{ request.form.get('sat' ~ i ~ '_z', '') }}" required placeholder="e.g. 18000000" class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-slate-900 focus:outline-none focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600">
                         </div>
                         <div>
-                            <label class="block text-xs uppercase tracking-wider text-slate-600 mb-1 font-medium">Travel Time (s)</label>
+                            <label class="block text-xs tracking-wider text-slate-600 mb-1 font-semibold">Travel Time (seconds)</label>
                             <input type="number" step="any" name="sat{{ i }}_time" value="{{ request.form.get('sat' ~ i ~ '_time', '') }}" required placeholder="e.g. 0.075" class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-slate-900 focus:outline-none focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600">
                         </div>
                     </div>
@@ -240,7 +240,7 @@
             if (!container) return;
 
             const satData = [];
-            // Extract input values for labels and dynamic scaling
+            // Extract input values and display ECEF coordinates cleanly in kilometers (km)
             for (let i = 1; i <= 4; i++) {
                 const x = parseFloat(document.querySelector(`input[name="sat${i}_x"]`)?.value) || 0;
                 const y = parseFloat(document.querySelector(`input[name="sat${i}_y"]`)?.value) || 0;
@@ -253,7 +253,10 @@
 
                 const labelEl = document.getElementById(`label-s${i}`);
                 if (labelEl) {
-                    labelEl.innerHTML = `X: ${(x/1000000).toFixed(2)}M<br>Y: ${(y/1000000).toFixed(2)}M<br>Z: ${(z/1000000).toFixed(2)}M<br>R${i}: ${distKm} km`;
+                    const xKm = (x / 1000).toLocaleString(undefined, {maximumFractionDigits: 0});
+                    const yKm = (y / 1000).toLocaleString(undefined, {maximumFractionDigits: 0});
+                    const zKm = (z / 1000).toLocaleString(undefined, {maximumFractionDigits: 0});
+                    labelEl.innerHTML = `X: ${xKm} km<br>Y: ${yKm} km<br>Z: ${zKm} km<br><strong>R${i}: ${distKm} km</strong>`;
                 }
             }
 
