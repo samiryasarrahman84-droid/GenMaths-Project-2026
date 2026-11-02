@@ -33,26 +33,26 @@
 
         <form method="POST" class="space-y-6">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Satellite 1 to 4 Input Cards -->
+                <!-- Satellite 1 to 4 Input Cards (With value persistence) -->
                 {% for i in range(1, 5) %}
                 <div class="bg-slate-50 p-5 rounded-xl border border-slate-200 shadow-sm">
                     <h2 class="text-lg font-semibold text-indigo-700 mb-3">Satellite {{ i }}</h2>
                     <div class="space-y-3">
                         <div>
                             <label class="block text-xs uppercase tracking-wider text-slate-600 mb-1 font-medium">X Coordinate (m)</label>
-                            <input type="number" step="any" name="sat{{ i }}_x" required placeholder="e.g. 15600000" class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-slate-900 focus:outline-none focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600">
+                            <input type="number" step="any" name="sat{{ i }}_x" value="{{ request.form.get('sat' ~ i ~ '_x', '') }}" required placeholder="e.g. 15600000" class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-slate-900 focus:outline-none focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600">
                         </div>
                         <div>
                             <label class="block text-xs uppercase tracking-wider text-slate-600 mb-1 font-medium">Y Coordinate (m)</label>
-                            <input type="number" step="any" name="sat{{ i }}_y" required placeholder="e.g. 21000000" class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-slate-900 focus:outline-none focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600">
+                            <input type="number" step="any" name="sat{{ i }}_y" value="{{ request.form.get('sat' ~ i ~ '_y', '') }}" required placeholder="e.g. 21000000" class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-slate-900 focus:outline-none focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600">
                         </div>
                         <div>
                             <label class="block text-xs uppercase tracking-wider text-slate-600 mb-1 font-medium">Z Coordinate (m)</label>
-                            <input type="number" step="any" name="sat{{ i }}_z" required placeholder="e.g. 18000000" class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-slate-900 focus:outline-none focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600">
+                            <input type="number" step="any" name="sat{{ i }}_z" value="{{ request.form.get('sat' ~ i ~ '_z', '') }}" required placeholder="e.g. 18000000" class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-slate-900 focus:outline-none focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600">
                         </div>
                         <div>
                             <label class="block text-xs uppercase tracking-wider text-slate-600 mb-1 font-medium">Travel Time (s)</label>
-                            <input type="number" step="any" name="sat{{ i }}_time" required placeholder="e.g. 0.075" class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-slate-900 focus:outline-none focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600">
+                            <input type="number" step="any" name="sat{{ i }}_time" value="{{ request.form.get('sat' ~ i ~ '_time', '') }}" required placeholder="e.g. 0.075" class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-slate-900 focus:outline-none focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600">
                         </div>
                     </div>
                 </div>
@@ -239,13 +239,17 @@
             const container = document.getElementById('canvas-container');
             if (!container) return;
 
-            // Extract input values for labels and distances
+            const satData = [];
+            // Extract input values for labels and dynamic scaling
             for (let i = 1; i <= 4; i++) {
                 const x = parseFloat(document.querySelector(`input[name="sat${i}_x"]`)?.value) || 0;
                 const y = parseFloat(document.querySelector(`input[name="sat${i}_y"]`)?.value) || 0;
                 const z = parseFloat(document.querySelector(`input[name="sat${i}_z"]`)?.value) || 0;
                 const time = parseFloat(document.querySelector(`input[name="sat${i}_time"]`)?.value) || 0.07;
-                const distKm = (time * 299792458.0 / 1000).toFixed(0);
+                const distMeters = time * 299792458.0;
+                const distKm = (distMeters / 1000).toFixed(0);
+
+                satData.push({ x, y, z, distMeters, distKm });
 
                 const labelEl = document.getElementById(`label-s${i}`);
                 if (labelEl) {
@@ -253,10 +257,17 @@
                 }
             }
 
+            // Compute center average for local reference origin
+            const avgX = (satData[0].x + satData[1].x + satData[2].x + satData[3].x) / 4;
+            const avgY = (satData[0].y + satData[1].y + satData[2].y + satData[3].y) / 4;
+            const avgZ = (satData[0].z + satData[1].z + satData[2].z + satData[3].z) / 4;
+
+            const scaleFactor = 4000000.0;
+
             // 1. Scene, Camera, Renderer Setup with White Background
             const scene = new THREE.Scene();
             const camera = new THREE.PerspectiveCamera(60, container.clientWidth / container.clientHeight, 0.1, 1000);
-            camera.position.set(10, 8, 10);
+            camera.position.set(8, 6, 8);
 
             const renderer = new THREE.WebGLRenderer({ antialias: true });
             renderer.setClearColor(0xffffff, 1); // Pure white background
@@ -271,22 +282,21 @@
             const ambientLight = new THREE.AmbientLight(0xffffff, 0.9);
             scene.add(ambientLight);
 
-            // 4. Receiver Marker at Intersection Point (Origin)
+            // 4. Receiver Marker at calculated origin (0,0,0 relative to average center)
             const recGeo = new THREE.SphereGeometry(0.35, 32, 32);
             const recMat = new THREE.MeshBasicMaterial({ color: 0x10b981 }); // Emerald Green
             const receiverMarker = new THREE.Mesh(recGeo, recMat);
             receiverMarker.position.set(0, 0, 0);
             scene.add(receiverMarker);
 
-            // 5. Wireframe Spheres & Satellite Dots (S1, S2, S3, S4)
+            // 5. Dynamic Wireframe Spheres & Satellite Dots based on actual inputs
             const colors = [0x2563eb, 0x16a34a, 0xd97706, 0x4b5563]; // Blue, Green, Orange, Grey
-            for (let i = 0; i < 4; i++) {
-                const angle = (i * Math.PI / 2);
-                const pos = new THREE.Vector3(
-                    Math.cos(angle) * 3.8,
-                    Math.sin(angle) * 2.8 + (i % 2 === 0 ? 0.8 : -0.8),
-                    (i - 1.5) * 1.8
-                );
+
+            satData.forEach((sat, i) => {
+                const posX = (sat.x - avgX) / scaleFactor;
+                const posY = (sat.y - avgY) / scaleFactor;
+                const posZ = (sat.z - avgZ) / scaleFactor;
+                const pos = new THREE.Vector3(posX, posY, posZ);
 
                 // Satellite Dot (Si)
                 const satGeo = new THREE.SphereGeometry(0.25, 16, 16);
@@ -295,14 +305,15 @@
                 satMesh.position.copy(pos);
                 scene.add(satMesh);
 
-                // Wireframe Sphere (No transparency)
-                const sphereGeo = new THREE.SphereGeometry(4.2, 16, 16);
+                // Wireframe Sphere proportional to calculated travel distance
+                const scaledRadius = sat.distMeters / scaleFactor;
+                const sphereGeo = new THREE.SphereGeometry(scaledRadius, 16, 16);
                 const wireframeGeo = new THREE.WireframeGeometry(sphereGeo);
                 const wireframeMat = new THREE.LineBasicMaterial({ color: colors[i] });
                 const wireframeMesh = new THREE.LineSegments(wireframeGeo, wireframeMat);
                 wireframeMesh.position.copy(pos);
                 scene.add(wireframeMesh);
-            }
+            });
 
             // 6. Animation Loop
             function animate() {
