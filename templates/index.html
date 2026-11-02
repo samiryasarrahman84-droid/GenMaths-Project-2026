@@ -70,8 +70,10 @@
         {% endif %}
 
         {% if result %}
-        <div class="mt-8 bg-slate-50 border border-emerald-300 p-6 rounded-xl shadow-md">
-            <h2 class="text-xl font-bold text-emerald-700 mb-4 text-center">Results Found</h2>
+        <div class="mt-8 bg-slate-50 border border-emerald-300 p-6 rounded-xl shadow-md space-y-6">
+            <h2 class="text-xl font-bold text-emerald-700 text-center">Results Found</h2>
+
+            <!-- ECEF & Clock Bias Grid -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-slate-800">
                 <div class="bg-white p-4 rounded-lg border border-slate-200 shadow-sm">
                     <span class="block text-xs text-slate-500 uppercase font-medium">Receiver X Coordinate</span>
@@ -89,6 +91,35 @@
                     <span class="block text-xs text-slate-500 uppercase font-medium">Receiver Clock Bias</span>
                     <span class="text-lg font-mono text-indigo-600 font-semibold">{{ result.bias_meters }} m</span>
                     <span class="block text-xs text-slate-400 mt-1 font-mono">({{ result.bias_seconds }} s)</span>
+                </div>
+            </div>
+
+            <!-- Toggle Button for WGS-84 LLA -->
+            <div class="text-center pt-2 border-t border-slate-200">
+                <button type="button"
+                        onclick="toggleLLA()"
+                        id="toggleLlaBtn"
+                        class="bg-slate-200 hover:bg-slate-300 text-slate-800 text-sm font-semibold px-5 py-2.5 rounded-xl shadow-sm transition duration-200">
+                     View Latitude, Longitude & Altitude (WGS-84)
+                </button>
+            </div>
+
+            <!-- Hidden WGS-84 Card (Toggled via JS) -->
+            <div id="llaSection" class="hidden space-y-4 pt-2">
+                <h3 class="text-md font-semibold text-slate-700 text-center">WGS-84 Geographic Coordinates</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-slate-800">
+                    <div class="bg-white p-4 rounded-lg border border-slate-200 shadow-sm text-center">
+                        <span class="block text-xs text-slate-500 uppercase font-medium">Latitude</span>
+                        <span class="text-lg font-mono text-indigo-600 font-semibold">{{ result.lat }}&deg; N</span>
+                    </div>
+                    <div class="bg-white p-4 rounded-lg border border-slate-200 shadow-sm text-center">
+                        <span class="block text-xs text-slate-500 uppercase font-medium">Longitude</span>
+                        <span class="text-lg font-mono text-indigo-600 font-semibold">{{ result.lon }}&deg; E</span>
+                    </div>
+                    <div class="bg-white p-4 rounded-lg border border-slate-200 shadow-sm text-center">
+                        <span class="block text-xs text-slate-500 uppercase font-medium">Altitude</span>
+                        <span class="text-lg font-mono text-indigo-600 font-semibold">{{ result.alt }} m</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -121,6 +152,20 @@
             document.querySelector('input[name="sat4_y"]').value = '15200000';
             document.querySelector('input[name="sat4_z"]').value = '18900000';
             document.querySelector('input[name="sat4_time"]').value = '0.0732174';
+        }
+    </script>
+<script>
+        function toggleLLA() {
+            const llaSection = document.getElementById('llaSection');
+            const btn = document.getElementById('toggleLlaBtn');
+
+            if (llaSection.classList.contains('hidden')) {
+                llaSection.classList.remove('hidden');
+                btn.textContent = 'Hide Latitude, Longitude & Altitude';
+            } else {
+                llaSection.classList.add('hidden');
+                btn.textContent = ' View Latitude, Longitude & Altitude (WGS-84)';
+            }
         }
     </script>
 </body>
