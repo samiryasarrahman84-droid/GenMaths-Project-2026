@@ -103,8 +103,27 @@
                         onclick="toggleLLA()"
                         id="toggleLlaBtn"
                         class="bg-slate-200 hover:bg-slate-300 text-slate-800 text-sm font-semibold px-5 py-2.5 rounded-xl shadow-sm transition duration-200">
-                     View Latitude, Longitude & Altitude (WGS-84)
+                    View Latitude, Longitude & Altitude (WGS-84)
                 </button>
+            </div>
+
+            <!-- Hidden WGS-84 Card (Toggled via JS) - Positioned Above 3D Model -->
+            <div id="llaSection" class="hidden space-y-4 pt-2">
+                <h3 class="text-md font-semibold text-slate-700 text-center">WGS-84 Geographic Coordinates</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-slate-800">
+                    <div class="bg-white p-4 rounded-lg border border-slate-200 shadow-sm text-center">
+                        <span class="block text-xs text-slate-500 uppercase font-medium">Latitude</span>
+                        <span class="text-lg font-mono text-indigo-600 font-semibold">{{ result.lat }}&deg; N</span>
+                    </div>
+                    <div class="bg-white p-4 rounded-lg border border-slate-200 shadow-sm text-center">
+                        <span class="block text-xs text-slate-500 uppercase font-medium">Longitude</span>
+                        <span class="text-lg font-mono text-indigo-600 font-semibold">{{ result.lon }}&deg; E</span>
+                    </div>
+                    <div class="bg-white p-4 rounded-lg border border-slate-200 shadow-sm text-center">
+                        <span class="block text-xs text-slate-500 uppercase font-medium">Altitude</span>
+                        <span class="text-lg font-mono text-indigo-600 font-semibold">{{ result.alt }} m</span>
+                    </div>
+                </div>
             </div>
 
             <!-- "How does this work?" Trilateration 3D Toggle Button -->
@@ -151,25 +170,6 @@
                     </div>
                 </div>
             </div>
-
-            <!-- Hidden WGS-84 Card (Toggled via JS) -->
-            <div id="llaSection" class="hidden space-y-4 pt-2">
-                <h3 class="text-md font-semibold text-slate-700 text-center">WGS-84 Geographic Coordinates</h3>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-slate-800">
-                    <div class="bg-white p-4 rounded-lg border border-slate-200 shadow-sm text-center">
-                        <span class="block text-xs text-slate-500 uppercase font-medium">Latitude</span>
-                        <span class="text-lg font-mono text-indigo-600 font-semibold">{{ result.lat }}&deg; N</span>
-                    </div>
-                    <div class="bg-white p-4 rounded-lg border border-slate-200 shadow-sm text-center">
-                        <span class="block text-xs text-slate-500 uppercase font-medium">Longitude</span>
-                        <span class="text-lg font-mono text-indigo-600 font-semibold">{{ result.lon }}&deg; E</span>
-                    </div>
-                    <div class="bg-white p-4 rounded-lg border border-slate-200 shadow-sm text-center">
-                        <span class="block text-xs text-slate-500 uppercase font-medium">Altitude</span>
-                        <span class="text-lg font-mono text-indigo-600 font-semibold">{{ result.alt }} m</span>
-                    </div>
-                </div>
-            </div>
         </div>
         {% endif %}
     </div>
@@ -209,7 +209,7 @@
                 btn.textContent = 'Hide Latitude, Longitude & Altitude';
             } else {
                 llaSection.classList.add('hidden');
-                btn.textContent = ' View Latitude, Longitude & Altitude (WGS-84)';
+                btn.textContent = 'View Latitude, Longitude & Altitude (WGS-84)';
             }
         }
     </script>
