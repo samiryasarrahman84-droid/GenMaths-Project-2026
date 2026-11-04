@@ -123,121 +123,122 @@
             </div>
 
             <!-- Detailed Calculation Overview Section -->
-            <div class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm space-y-6 mt-6">
-                <h3 class="text-xl font-bold text-slate-800 border-b pb-3 flex items-center gap-2">
+            <div class="bg-white border border-slate-200 rounded-2xl p-8 shadow-md space-y-8 mt-6">
+                <h3 class="text-2xl font-bold text-slate-800 border-b pb-4 flex items-center gap-3">
                     <span>📖 Detailed Theory & Mathematical Derivation</span>
                 </h3>
 
                 <!-- ECEF Section -->
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-center bg-slate-50 p-5 rounded-xl border border-slate-200">
-                    <div class="md:col-span-2 space-y-3">
-                        <h4 class="text-base font-bold text-indigo-700">1. Earth-Centered, Earth-Fixed (ECEF) Coordinate System</h4>
-                        <p class="text-sm text-slate-700 leading-relaxed">
-                            The ECEF system is a 3D Cartesian coordinate system ($X, Y, Z$) that rotates synchronously with the Earth. Its geometric center $(0,0,0)$ is fixed at the Earth's center of mass.
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center bg-slate-50 p-6 rounded-2xl border border-slate-200">
+                    <div class="md:col-span-7 space-y-4">
+                        <h4 class="text-lg font-bold text-indigo-700">1. Earth-Centered, Earth-Fixed (ECEF) Coordinate System</h4>
+                        <p class="text-base text-slate-700 leading-relaxed">
+                            The ECEF system is a 3-dimensional Cartesian coordinate system (<i>X, Y, Z</i>) that rotates synchronously with the Earth. Its geometric center (0, 0, 0) is fixed precisely at the Earth's center of mass.
                         </p>
-                        <ul class="text-xs text-slate-600 space-y-1 list-disc pl-4">
+                        <ul class="text-sm text-slate-700 space-y-2 list-disc pl-5">
                             <li><strong>Z-axis:</strong> Points northward along Earth's true rotational axis (Conventional Terrestrial Pole).</li>
-                            <li><strong>X-axis:</strong> Lies in the equatorial plane, intersecting the Prime Meridian ($0^\circ$ longitude) at the equator.</li>
-                            <li><strong>Y-axis:</strong> Completes the right-handed orthogonal system, pointing towards $90^\circ$ East longitude at the equator.</li>
+                            <li><strong>X-axis:</strong> Lies in the equatorial plane, intersecting the Prime Meridian (0° longitude) at the equator.</li>
+                            <li><strong>Y-axis:</strong> Completes the right-handed orthogonal system, pointing towards 90° East longitude at the equator.</li>
                         </ul>
                     </div>
-                    <div class="flex flex-col items-center justify-center bg-white p-3 rounded-lg border border-slate-200 shadow-inner">
-                        <!-- Inline SVG for ECEF Diagram -->
-                        <svg viewBox="0 0 200 200" class="w-48 h-48">
+                    <div class="md:col-span-5 flex flex-col items-center justify-center bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+                        <!-- Larger SVG for ECEF Diagram -->
+                        <svg viewBox="0 0 240 240" class="w-64 h-64">
                             <!-- Globe circle -->
-                            <circle cx="100" cy="100" r="60" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="1.5"/>
-                            <ellipse cx="100" cy="100" rx="60" ry="20" fill="none" stroke="#94a3b8" stroke-dasharray="3,3"/>
-                            <ellipse cx="100" cy="100" rx="20" ry="60" fill="none" stroke="#94a3b8" stroke-dasharray="3,3"/>
+                            <circle cx="120" cy="120" r="75" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/>
+                            <ellipse cx="120" cy="120" rx="75" ry="25" fill="none" stroke="#94a3b8" stroke-dasharray="4,4" stroke-width="1.5"/>
+                            <ellipse cx="120" cy="120" rx="25" ry="75" fill="none" stroke="#94a3b8" stroke-dasharray="4,4" stroke-width="1.5"/>
                             <!-- Origin -->
-                            <circle cx="100" cy="100" r="3" fill="#0f172a"/>
-                            <text x="105" y="108" font-size="10" fill="#0f172a" font-family="monospace">(0,0,0)</text>
+                            <circle cx="120" cy="120" r="4" fill="#0f172a"/>
+                            <text x="128" y="130" font-size="12" fill="#0f172a" font-family="monospace" font-weight="bold">(0,0,0)</text>
                             <!-- Z Axis -->
-                            <line x1="100" y1="100" x2="100" y2="25" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow)"/>
-                            <text x="105" y="32" font-size="11" fill="#2563eb" font-weight="bold">Z (North)</text>
+                            <line x1="120" y1="120" x2="120" y2="30" stroke="#2563eb" stroke-width="3"/>
+                            <polygon points="120,22 116,32 124,32" fill="#2563eb"/>
+                            <text x="128" y="35" font-size="13" fill="#2563eb" font-weight="bold">Z (North)</text>
                             <!-- X Axis -->
-                            <line x1="100" y1="100" x2="165" y2="135" stroke="#16a34a" stroke-width="2"/>
-                            <text x="168" y="142" font-size="11" fill="#16a34a" font-weight="bold">X (Prime Meridian)</text>
+                            <line x1="120" y1="120" x2="200" y2="160" stroke="#16a34a" stroke-width="3"/>
+                            <polygon points="207,163 197,155 201,165" fill="#16a34a"/>
+                            <text x="175" y="185" font-size="12" fill="#16a34a" font-weight="bold">X (Prime Meridian)</text>
                             <!-- Y Axis -->
-                            <line x1="100" y1="100" x2="40" y2="135" stroke="#d97706" stroke-width="2"/>
-                            <text x="12" y="142" font-size="11" fill="#d97706" font-weight="bold">Y (90°E)</text>
+                            <line x1="120" y1="120" x2="40" y2="160" stroke="#d97706" stroke-width="3"/>
+                            <polygon points="33,163 39,165 43,155" fill="#d97706"/>
+                            <text x="15" y="185" font-size="12" fill="#d97706" font-weight="bold">Y (90°E)</text>
                         </svg>
-                        <span class="text-[11px] text-slate-500 mt-1 font-medium">ECEF 3D Cartesian Axes</span>
+                        <span class="text-xs text-slate-500 mt-2 font-semibold">ECEF 3D Cartesian Axes</span>
                     </div>
                 </div>
 
                 <!-- WGS-84 Ellipsoid Section -->
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-center bg-slate-50 p-5 rounded-xl border border-slate-200">
-                    <div class="md:col-span-2 space-y-3">
-                        <h4 class="text-base font-bold text-indigo-700">2. WGS-84 Reference Ellipsoid</h4>
-                        <p class="text-sm text-slate-700 leading-relaxed">
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center bg-slate-50 p-6 rounded-2xl border border-slate-200">
+                    <div class="md:col-span-7 space-y-4">
+                        <h4 class="text-lg font-bold text-indigo-700">2. WGS-84 Reference Ellipsoid</h4>
+                        <p class="text-base text-slate-700 leading-relaxed">
                             Because the Earth bulges at the equator due to centrifugal force, it is modeled as an oblate spheroid rather than a perfect sphere under the <strong>World Geodetic System 1984 (WGS-84)</strong> standard.
                         </p>
-                        <p class="text-xs text-slate-600 leading-relaxed">
-                            It is strictly defined by two geometric parameters: the semi-major equatorial radius ($a = 6,378,137\text{ m}$) and flattening ($f \approx 1 / 298.257$). Transforming ECEF Cartesian coordinates $(X, Y, Z)$ to geodetic coordinates maps the position onto this mathematical ellipsoid.
+                        <p class="text-sm text-slate-700 leading-relaxed">
+                            It is defined by two primary geometric parameters: the semi-major equatorial radius (<i>a</i> = 6,378,137 m) and flattening (<i>f</i> &approx; 1 / 298.257). Transforming ECEF Cartesian coordinates (<i>X, Y, Z</i>) maps the receiver's position onto this mathematical reference ellipsoid.
                         </p>
                     </div>
-                    <div class="flex flex-col items-center justify-center bg-white p-3 rounded-lg border border-slate-200 shadow-inner">
-                        <!-- Inline SVG for WGS-84 Ellipsoid Diagram -->
-                        <svg viewBox="0 0 200 180" class="w-48 h-44">
+                    <div class="md:col-span-5 flex flex-col items-center justify-center bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+                        <!-- Larger SVG for WGS-84 Ellipsoid Diagram -->
+                        <svg viewBox="0 0 240 220" class="w-64 h-60">
                             <!-- Ellipsoid profile -->
-                            <ellipse cx="100" cy="90" rx="75" ry="50" fill="#f8fafc" stroke="#475569" stroke-width="2"/>
+                            <ellipse cx="120" cy="110" rx="90" ry="60" fill="#f8fafc" stroke="#475569" stroke-width="2.5"/>
                             <!-- Equator (semi-major axis a) -->
-                            <line x1="25" y1="90" x2="175" y2="90" stroke="#2563eb" stroke-width="1.5" stroke-dasharray="4,2"/>
-                            <text x="135" y="83" font-size="10" fill="#2563eb" font-weight="bold">a (Equator)</text>
+                            <line x1="30" y1="110" x2="210" y2="110" stroke="#2563eb" stroke-width="2" stroke-dasharray="5,3"/>
+                            <text x="145" y="100" font-size="11" fill="#2563eb" font-weight="bold">a (Equator Radius)</text>
                             <!-- Polar axis (semi-minor axis b) -->
-                            <line x1="100" y1="40" x2="100" y2="140" stroke="#dc2626" stroke-width="1.5" stroke-dasharray="4,2"/>
-                            <text x="104" y="55" font-size="10" fill="#dc2626" font-weight="bold">b (Polar)</text>
+                            <line x1="120" y1="50" x2="120" y2="170" stroke="#dc2626" stroke-width="2" stroke-dasharray="5,3"/>
+                            <text x="126" y="68" font-size="11" fill="#dc2626" font-weight="bold">b (Polar)</text>
                             <!-- Center -->
-                            <circle cx="100" cy="90" r="2.5" fill="#0f172a"/>
+                            <circle cx="120" cy="110" r="3.5" fill="#0f172a"/>
                             <!-- Surface point -->
-                            <circle cx="155" cy="70" r="3.5" fill="#10b981"/>
-                            <line x1="100" y1="90" x2="155" y2="70" stroke="#64748b" stroke-width="1"/>
-                            <text x="120" y="62" font-size="9" fill="#0f172a">Latitude (\(\phi\))</text>
+                            <circle cx="185" cy="85" r="5" fill="#10b981"/>
+                            <line x1="120" y1="110" x2="185" y2="85" stroke="#64748b" stroke-width="1.5"/>
+                            <text x="132" y="92" font-size="11" fill="#0f172a" font-weight="bold">Position (φ, λ)</text>
                         </svg>
-                        <span class="text-[11px] text-slate-500 mt-1 font-medium">WGS-84 Oblate Spheroid</span>
+                        <span class="text-xs text-slate-500 mt-2 font-semibold">WGS-84 Oblate Spheroid Geometry</span>
                     </div>
                 </div>
 
                 <!-- Mathematical Derivation Section -->
-                <div class="bg-slate-50 p-5 rounded-xl border border-slate-200 space-y-4">
-                    <h4 class="text-base font-bold text-indigo-700">3. Mathematical Derivation of 3D Trilateration Equations</h4>
-                    <p class="text-sm text-slate-700 leading-relaxed">
-                        To find the unknown receiver position vector \((X, Y, Z)\) and receiver clock offset bias \(b\), we formulate simultaneous equations using signals from 4 visible satellites.
+                <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200 space-y-5">
+                    <h4 class="text-lg font-bold text-indigo-700">3. Mathematical Derivation of 3D Trilateration Equations</h4>
+                    <p class="text-base text-slate-700 leading-relaxed">
+                        To find the unknown receiver position vector <i>(X, Y, Z)</i> and receiver clock offset bias <i>b</i>, we formulate simultaneous equations using signals received from 4 visible satellites.
                     </p>
 
-                    <div class="space-y-3 text-sm text-slate-700">
-                        <div class="bg-white p-3.5 rounded-lg border border-slate-200 shadow-sm">
-                            <strong class="text-indigo-600 block mb-1">Step A: True Euclidean Distance (Geometric Distance)</strong>
-                            <p class="font-mono text-xs text-slate-700 mb-1">
-                                $$d_i = \sqrt{(X - x_i)^2 + (Y - y_i)^2 + (Z - z_i)^2}$$
-                            </p>
-                            <p class="text-xs text-slate-500">
-                                By Pythagorean theorem in 3D space, the true straight-line distance \(d_i\) between the receiver \((X, Y, Z)\) and satellite \(i\) located at known ECEF coordinates \((x_i, y_i, z_i)\).
-                            </p>
-                        </div>
-
-                        <div class="bg-white p-3.5 rounded-lg border border-slate-200 shadow-sm">
-                            <strong class="text-indigo-600 block mb-1">Step B: Accounting for Receiver Clock Bias</strong>
-                            <p class="font-mono text-xs text-slate-700 mb-1">
-                                $$P_i = C \cdot \Delta t_i = d_i + b$$
-                            </p>
-                            <p class="text-xs text-slate-500">
-                                Radio signals travel at the speed of light \(C \approx 299,792,458 \text{ m/s}\). Multiplying the measured signal travel time \(\Delta t_i\) by \(C\) gives the <strong>pseudorange</strong> \(P_i\). It is called a "pseudo" range because consumer receiver clocks are not synchronized with atomic satellite clocks, introducing a clock error term \(b\) (expressed in meters of equivalent distance).
+                    <div class="space-y-4 text-sm text-slate-700">
+                        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm space-y-2">
+                            <strong class="text-indigo-600 text-base block">Step A: True Euclidean Distance (Geometric Distance)</strong>
+                            <div class="font-mono bg-indigo-50/50 p-3 rounded-lg text-center text-base md:text-lg text-indigo-900 font-bold border border-indigo-100">
+                                d<sub>i</sub> = &radic;[ (X - x<sub>i</sub>)<sup>2</sup> + (Y - y<sub>i</sub>)<sup>2</sup> + (Z - z<sub>i</sub>)<sup>2</sup> ]
+                            </div>
+                            <p class="text-sm text-slate-600">
+                                By the Pythagorean theorem in 3-dimensional space, the true straight-line geometric distance <i>d<sub>i</sub></i> between the receiver position <i>(X, Y, Z)</i> and satellite <i>i</i> located at known ECEF coordinates <i>(x<sub>i</sub>, y<sub>i</sub>, z<sub>i</sub>)</i>.
                             </p>
                         </div>
 
-                        <div class="bg-white p-3.5 rounded-lg border border-slate-200 shadow-sm">
-                            <strong class="text-indigo-600 block mb-1">Step C: Assembling the 4-Satellite Equation System</strong>
-                            <p class="font-mono text-xs text-slate-700 mb-2">
-                                $$\begin{aligned}
-                                P_1 &= \sqrt{(X - x_1)^2 + (Y - y_1)^2 + (Z - z_1)^2} + b \\
-                                P_2 &= \sqrt{(X - x_2)^2 + (Y - y_2)^2 + (Z - z_2)^2} + b \\
-                                P_3 &= \sqrt{(X - x_3)^2 + (Y - y_3)^2 + (Z - z_3)^2} + b \\
-                                P_4 &= \sqrt{(X - x_4)^2 + (Y - y_4)^2 + (Z - z_4)^2} + b
-                                \end{aligned}$$
+                        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm space-y-2">
+                            <strong class="text-indigo-600 text-base block">Step B: Accounting for Receiver Clock Bias</strong>
+                            <div class="font-mono bg-indigo-50/50 p-3 rounded-lg text-center text-base md:text-lg text-indigo-900 font-bold border border-indigo-100">
+                                P<sub>i</sub> = C &times; &Delta;t<sub>i</sub> = d<sub>i</sub> + b
+                            </div>
+                            <p class="text-sm text-slate-600">
+                                Radio signals travel at the speed of light <i>C</i> &approx; 299,792,458 m/s. Multiplying the measured signal travel time &Delta;t<sub>i</sub> by <i>C</i> gives the <strong>pseudorange</strong> <i>P<sub>i</sub></i>. It is called a "pseudo" range because consumer receiver clocks are not synchronized with atomic satellite clocks, introducing a clock error term <i>b</i> (expressed in meters of equivalent distance).
                             </p>
-                            <p class="text-xs text-slate-500">
-                                Because there are 4 unknown variables to solve for—three spatial position coordinates \((X, Y, Z)\) and one clock bias term \(b\)—exactly <strong>four independent satellite equations</strong> are required to find a unique, unambiguous solution.
+                        </div>
+
+                        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm space-y-2">
+                            <strong class="text-indigo-600 text-base block">Step C: Assembling the 4-Satellite Simultaneous Equations</strong>
+                            <div class="font-mono bg-indigo-50/50 p-4 rounded-lg text-center text-sm md:text-base text-indigo-900 font-bold border border-indigo-100 space-y-2">
+                                <div>P<sub>1</sub> = &radic;[ (X - x<sub>1</sub>)<sup>2</sup> + (Y - y<sub>1</sub>)<sup>2</sup> + (Z - z<sub>1</sub>)<sup>2</sup> ] + b</div>
+                                <div>P<sub>2</sub> = &radic;[ (X - x<sub>2</sub>)<sup>2</sup> + (Y - y<sub>2</sub>)<sup>2</sup> + (Z - z<sub>2</sub>)<sup>2</sup> ] + b</div>
+                                <div>P<sub>3</sub> = &radic;[ (X - x<sub>3</sub>)<sup>2</sup> + (Y - y<sub>3</sub>)<sup>2</sup> + (Z - z<sub>3</sub>)<sup>2</sup> ] + b</div>
+                                <div>P<sub>4</sub> = &radic;[ (X - x<sub>4</sub>)<sup>2</sup> + (Y - y<sub>4</sub>)<sup>2</sup> + (Z - z<sub>4</sub>)<sup>2</sup> ] + b</div>
+                            </div>
+                            <p class="text-sm text-slate-600">
+                                Because there are 4 unknown variables to solve for—three spatial position coordinates <i>(X, Y, Z)</i> and one clock bias term <i>b</i>—exactly <strong>four independent satellite equations</strong> are required to find a unique, unambiguous receiver position.
                             </p>
                         </div>
                     </div>
@@ -455,4 +456,4 @@
         }
     </script>
 </body>
-</html></html>
+</html>
