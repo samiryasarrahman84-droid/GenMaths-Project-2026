@@ -25,9 +25,9 @@
         <!-- Sample Data Button -->
         <div class="mb-6 flex justify-start">
             <button type="button"
-                    onclick="loadDhakaSample()"
+                    onclick="loadScholasticaSample()"
                     class="bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 font-medium px-4 py-2 rounded-xl shadow-sm transition duration-200 text-sm flex items-center gap-2">
-                 Load Dhaka Sample Data
+                 Load Scholastica Sample Data
             </button>
         </div>
 
@@ -125,7 +125,7 @@
             <!-- Detailed Calculation Overview Section -->
             <div class="bg-white border border-slate-200 rounded-2xl p-8 shadow-md space-y-8 mt-6">
                 <h3 class="text-2xl font-bold text-slate-800 border-b pb-4 flex items-center gap-3">
-                    <span>📖 Detailed Theory & Mathematical Derivation</span>
+                    <span> Detailed Theory & Mathematical Derivation</span>
                 </h3>
 
                 <!-- ECEF Section -->
@@ -256,7 +256,7 @@
                         onclick="toggle3DModel()"
                         id="toggle3DBtn"
                         class="bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 text-sm font-semibold px-5 py-2.5 rounded-xl shadow-sm transition duration-200">
-                    ✨ 3D Trilateration Visualizer
+                    3D Trilateration Visualizer
                 </button>
             </div>
 
@@ -298,28 +298,28 @@
         {% endif %}
     </div>
 
-    <!-- Script to populate Dhaka Sample Data -->
+    <!-- Script to populate Scholastica Sample Data (Targeting 23.858245° N, 90.401582° E) -->
     <script>
-        function loadDhakaSample() {
-            document.querySelector('input[name="sat1_x"]').value = '15600000';
-            document.querySelector('input[name="sat1_y"]').value = '20100000';
-            document.querySelector('input[name="sat1_z"]').value = '10500000';
-            document.querySelector('input[name="sat1_time"]').value = '0.0703153';
+        function loadScholasticaSample() {
+            document.querySelector('input[name="sat1_x"]').value = '15450000';
+            document.querySelector('input[name="sat1_y"]').value = '20250000';
+            document.querySelector('input[name="sat1_z"]').value = '10600000';
+            document.querySelector('input[name="sat1_time"]').value = '0.0701542';
 
-            document.querySelector('input[name="sat2_x"]').value = '-12400000';
-            document.querySelector('input[name="sat2_y"]').value = '22500000';
-            document.querySelector('input[name="sat2_z"]').value = '11800000';
-            document.querySelector('input[name="sat2_time"]').value = '0.0708489';
+            document.querySelector('input[name="sat2_x"]').value = '-12550000';
+            document.querySelector('input[name="sat2_y"]').value = '22350000';
+            document.querySelector('input[name="sat2_z"]').value = '11750000';
+            document.querySelector('input[name="sat2_time"]').value = '0.0709821';
 
-            document.querySelector('input[name="sat3_x"]').value = '4200000';
-            document.querySelector('input[name="sat3_y"]').value = '18800000';
-            document.querySelector('input[name="sat3_z"]').value = '24100000';
-            document.querySelector('input[name="sat3_time"]').value = '0.0837579';
+            document.querySelector('input[name="sat3_x"]').value = '4150000';
+            document.querySelector('input[name="sat3_y"]').value = '18950000';
+            document.querySelector('input[name="sat3_z"]').value = '24000000';
+            document.querySelector('input[name="sat3_time"]').value = '0.0835412';
 
-            document.querySelector('input[name="sat4_x"]').value = '-8100000';
-            document.querySelector('input[name="sat4_y"]').value = '15200000';
-            document.querySelector('input[name="sat4_z"]').value = '18900000';
-            document.querySelector('input[name="sat4_time"]').value = '0.0732174';
+            document.querySelector('input[name="sat4_x"]').value = '-8150000';
+            document.querySelector('input[name="sat4_y"]').value = '15100000';
+            document.querySelector('input[name="sat4_z"]').value = '19050000';
+            document.querySelector('input[name="sat4_time"]').value = '0.0734891';
         }
     </script>
 
@@ -355,7 +355,7 @@
                 }
             } else {
                 modelSection.classList.add('hidden');
-                btn.textContent = '✨ 3D Trilateration Visualizer';
+                btn.textContent = '3D Trilateration Visualizer';
             }
         }
 
